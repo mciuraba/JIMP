@@ -12,10 +12,6 @@ int  backsubst(Matrix *x, Matrix *mat, Matrix *b){
 		return 2;
 	}	
 
-	for (int i =0; i < x->r; i++) {
-		x->data[i][0] = b->data[i][0];
-	}
-
 	for (int i = mat->r - 1; i >= 0; i--) {
     		if (mat->data[i][i] == 0) {
       			printf("Błąd dzielenia przez 0!\n");
@@ -28,6 +24,10 @@ int  backsubst(Matrix *x, Matrix *mat, Matrix *b){
       			x->data[i][0] -= mat->data[i][j] * x->data[j][0];
     		}
   	}
+
+	for(int i = 0; i < x->r; i++) {
+		x->data[i][0] = b->data[i][0];
+	}
 
 	return 0;
 }
