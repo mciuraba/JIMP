@@ -1,4 +1,6 @@
 #include "backsubst.h"
+#include <stdio.h>
+#include <stdlib.h>
 /**
  * Zwraca 0 - wsteczne podstawienie zakonczone sukcesem
  * Zwraca 1 - błąd dzielenia przez 0 (element na diagonali = 0)
@@ -10,7 +12,7 @@ int  backsubst(Matrix *x, Matrix *mat, Matrix *b){
 		return 2;
 	}	
 
-	for (i =0; i < x->r; i++) {
+	for (int i =0; i < x->r; i++) {
 		x->data[i][0] = b->data[i][0];
 	}
 
