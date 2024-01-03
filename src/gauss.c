@@ -1,79 +1,79 @@
 #include "gauss.h"
 
 #include <stdio.h>
+#include <stdlib.h> // dla funkcji abs
 
 /**
  * Zwraca 0 - elimnacja zakonczona sukcesem
  * Zwraca 1 - macierz osobliwa - dzielenie przez 0
  */
 int eliminate(Matrix* mat, Matrix* b) {
-// selekcja elementu diagonalnego
-    // szukanie indeksu
-    int max_idx = 0;
+    double diagonalny = 0;
+    double stala_w = 0;    // stała wierszowa służąca do wymnażania elementów macierzy
+    double stala_k = 0;    // stała kolumnowa służąca do wymnażania elementów macierzy
     
-    for( int i=0; i < mat->c - 1; ++i ) { // iterowanie po kolumnach
-        max_idx = i; // ustawienie indeks z maksymalną wartością na element diagonali
+    for( int k = 0; k < mat -> r-1; ++k ) {
+        // elem. diagonalny
+        wybor_diagonalnej(mat, b, k);
+        diagonalny = mat -> data[k][k];
         
-        for( int j = i+1; j < mat->r; ++j ) { // iterowanie po pozostałych elementach i-tej kolumny
-            if( ABS( mat->data[j][i] ) > ABS( mat->data[ max_idx ][i] ) ) {
-                max_idx = j;
-            }
+        // przypisanie stalej kolumnowej
+        stala_k = b -> data[k][0];
+        
+	// macierz b -> zmiana elementow
+        for( int j = k+1; j < b -> r; ++j ) {
+            stala_w = mat -> data[j][k];
+            b -> data[j][0] -= stala_w * stala_k / diagonalny;
         }
         
-        // sprawdzanie, czy sprawdzana macierz jest macierzą osobliwą (występuje dzielenie przez 0)
-        if( ABS( mat->data[ max_idx ][i] ) == 0 ) {
-            return 1;
-        }
-        
-        // zamiana miejscami wierszy
-        if( switch_rows( mat, i, max_idx ) == 1 )
-            return 1;
-            
-        if( switch_rows( b, i, max_idx ) == 1 )
-            return 1;
-    }
-    
-    
-// eliminacja gaussa
-    double diag = 0.;
-    double r_const = 0.;
-    
-    for( int k=0; k < mat->r - 1; ++ k ) {
-        diag = mat->data[k][k];
-        
-        // zmiana wartości w macierzy A
-        for( int i=k; i < mat->c - 1; ++i ) {
-            r_const = mat->data[k][i];
-            
-            for( int j = i+1; j < mat->r; ++j ) {
-                mat->data[j][i] -= mat->data[j][i] * r_const / diag;
-            }
-        }
-        
-        // zmiana wartości w macierzy b
-        for( int i=k; i < b->c - 1; ++i ) {
-            r_const = b->data[k][i];
-            
-            for( int j = i+1; j < b->r; ++j ) {
-                b->data[j][i] -= b->data[j][i] * r_const / diag;
+        // macierz A -> zmiana alementow 
+        for( int i = mat -> c-1; i >= k; --i ) {
+            stala_k = mat->data[k][i];
+
+            for( int j = k+1; j < mat -> r; ++j ) {
+                stala_w = mat->data[j][k];
+                mat->data[j][i] -= stala_w *stala_k / diagonalny;
             }
         }
     }
+    return 0;
+}
+
+int wybor_diagonalnej(Matrix* mat, Matrix* b, int k) {
+    int index = k;
+    for( int j = k+1; j < mat->r; ++j ){
+        if( abs( mat -> data[j][k] ) > abs( mat -> data[index][k] )){
+            index = j;
+        }
+    }
+    //jesli osobliwa - zwraca 0
+    if( abs( mat -> data[index][k] ) == 0 ) {
+        return 1;
+    }
+    
+    // zamiana wierszy
+    if( zamiana_wierszy( mat, k, index ) == 1 )
+        return 1;
+        
+    if( zamiana_wierszy( b, k, index ) == 1 )
+        return 1;
     
     return 0;
 }
 
-int switch_rows(Matrix* mat, int a, int b) {
-    if( a == b ) { // nie potrzeba zmiany
+int zamiana_wierszy(Matrix* mat, int x, int y) {
+    if( x == y ) { // x i y sa rowne, a wiec nie ma po co zamieniac
         return 0;
     }
-    if( a >= mat->r || b >= mat->r ) { // sprawdzenie, czy nie wyjdzie poza zakres macierzy
+    if( x >= mat->r || y >= mat->r ){
         return 1;
     }
     
-    double* v = mat->data[a];
-    mat->data[a] = mat->data[b];
-    mat->data[b] = v;
+    double* v = mat->data[x];
+    mat->data[x] = mat->data[y];
+    mat->data[y] = v;
     
     return 0;
 }
+
+
