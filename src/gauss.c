@@ -14,7 +14,7 @@ int eliminate(Matrix* mat, Matrix* b) {
     
     for( int k = 0; k < mat -> r-1; ++k ) {
         // elem. diagonalny
-        wybor_diagonalnej(mat, b, k);
+        wybor_diagonali(mat, b, k);
         diagonalny = mat -> data[k][k];
         
         // przypisanie stalej kolumnowej
@@ -39,7 +39,7 @@ int eliminate(Matrix* mat, Matrix* b) {
     return 0;
 }
 
-int wybor_diagonalnej(Matrix* mat, Matrix* b, int k) {
+int wybor_diagonali(Matrix* mat, Matrix* b, int k) {
     int index = k;
     for( int j = k+1; j < mat->r; ++j ){
         if( abs( mat -> data[j][k] ) > abs( mat -> data[index][k] )){
