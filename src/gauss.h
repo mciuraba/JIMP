@@ -3,13 +3,12 @@
 
 #include "mat_io.h"
 
-#define ABS(a) ( a < 0 ? -a : a )
-
 /**
  * Zwraca 0 - elimnacja zakonczona sukcesem
  * Zwraca 1 - macierz osobliwa - dzielenie przez 0
  */
 int eliminate(Matrix *mat, Matrix *b);
-int switch_rows(Matrix *mat, int a, int b);
+int wybor_diagonalnej(Matrix *mat, Matrix *b, int col);
+int zamiana_wierszy(Matrix *mat, int x, int y);
 
 #endif
