@@ -8,5 +8,7 @@
  * Zwraca 1 - macierz osobliwa - dzielenie przez 0
  */
 int eliminate(Matrix *mat, Matrix *b);
+int zamiana_wierszy(Matrix *mat, int x, int y);
+int wybor_diagonali(Matrix *mat, Matrix *b, int k);
 
 #endif
