@@ -1,7 +1,6 @@
 #include "gauss.h"
 
 #include <stdio.h>
-#include <stdlib.h> // dla funkcji abs
 
 /**
  * Zwraca 0 - elimnacja zakonczona sukcesem
@@ -42,12 +41,12 @@ int eliminate(Matrix* mat, Matrix* b) {
 int wybor_diagonali(Matrix* mat, Matrix* b, int k) {
     int index = k;
     for( int j = k+1; j < mat->r; ++j ){
-        if( abs( mat -> data[j][k] ) > abs( mat -> data[index][k] )){
+        if( ABS( mat -> data[j][k] ) > ABS( mat -> data[index][k] )){
             index = j;
         }
     }
     //jesli osobliwa - zwraca 0
-    if( abs( mat -> data[index][k] ) == 0 ) {
+    if( ABS( mat -> data[index][k] ) == 0 ) {
         return 1;
     }
     

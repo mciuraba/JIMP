@@ -42,7 +42,7 @@ void start_tests( char* program_name ) {
         printf( "-----------------------------\n" );
         
         printf( " Rzeczywisty wynik:\n" );
-        res = do_test( &(tests_arr[i]) );
+        res = do_test( &(tests_arr[i]) ); // wykonanie i-tego testu
         if( res == 0 ) {
             printToScreen( tests_arr[i].x );
         }
@@ -52,9 +52,10 @@ void start_tests( char* program_name ) {
         else if( res == 2 ) { //jakiś błąd
             fprintf( stderr, "%s: błąd: nie udało się przeprowadzić eliminacji Gauss\'a dla testu numer %d!\n", program_name , i+1 );
         }
-        else if( res > 2 ) {
+        else if( res > 2 ) { // błąd podczas przeprowadzania podstawienia wstecznego
             fprintf( stderr, "%s: błąd: nie udało się przeprowadzić podstawienia wstecznego dla testu numer %d!\n", program_name, i+1 );
             
+            // Opisy błędów dla podstawienia wstecznego
             if( res == 3 ) {
                 fprintf( stderr, "%s: opis błędu: napotkano dzielenie przez zero!\n", program_name );
             }
@@ -91,6 +92,7 @@ test_t init_test( Matrix* A, Matrix* b, Matrix* x_exp ) {
 }
 
 int do_test( test_t* test_ptr ) {
+    // sprawdza poprawność wczytania i wygenerowania macierzy; zwróci błąd wczytania macierzy, jeżeli taki występuje
     if( test_ptr->A == NULL || test_ptr->b == NULL || test_ptr->x == NULL || test_ptr->expected_x == NULL ) {
         return 1;
     }
@@ -98,22 +100,24 @@ int do_test( test_t* test_ptr ) {
     
     int res = 0;
     
+    // wykonanie eliminacji Gauss'a
     res = eliminate( test_ptr->A, test_ptr->b );
-    if( res != 0 ) { // wystąpił jakiś błąd
+    if( res != 0 ) { // wystąpił jakiś błąd (bliżej nieokreślony)
         return 2;
     }
 
-        res = backsubst( test_ptr->x, test_ptr->A, test_ptr->b );
-        if( res != 0 ) { // wystąpił jakiś błąd
-            if( res == 1 ) { // błąd dzielenia przez zero
-                return 3;
-            }
-            else { // błąd nieprawidłlowych rozmiarów macierzy
-                return 4;
-            }
+    // wykonanie podstawiania wstecznego
+    res = backsubst( test_ptr->x, test_ptr->A, test_ptr->b );
+    if( res != 0 ) { // wystąpił jakiś błąd
+        if( res == 1 ) { // błąd dzielenia przez zero
+            return 3;
         }
+        else { // błąd nieprawidłlowych rozmiarów macierzy
+            return 4;
+        }
+    }
     
-    return 0;
+    return 0; // sukces
 }
 
 void free_test( test_t test ) {

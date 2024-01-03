@@ -3,6 +3,8 @@
 
 #include "mat_io.h"
 
+#define ABS(a) ( a < 0 ? -a : a ) // makro, które wyrzuca wartość bezwzględną danej liczby
+
 /**
  * Zwraca 0 - elimnacja zakonczona sukcesem
  * Zwraca 1 - macierz osobliwa - dzielenie przez 0
