@@ -4,7 +4,7 @@
 #include "mat_io.h"
 
 #define BUFSIZE 256
-#define TESTS_COUNT 5
+#define TESTS_COUNT 6
 
 typedef struct {
     Matrix* A;
