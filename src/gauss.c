@@ -56,8 +56,8 @@ int wybor_diagonalnej(Matrix* mat, Matrix* b, int k) {
         return 1;
         
     if( zamiana_wierszy( b, k, index ) == 1 )
-        return 1;
-    
+	return 1;
+
     return 0;
 }
 
@@ -75,5 +75,3 @@ int zamiana_wierszy(Matrix* mat, int x, int y) {
     
     return 0;
 }
-
-

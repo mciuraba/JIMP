@@ -10,12 +10,12 @@ int backsubst(Matrix *x, Matrix *mat, Matrix *b) {
     // sprawdzenie rozmiarów macierzy
 	if( mat->r != mat->c || b->r != mat->r || b->c != 1 ) {
 		return 2;
-	}	
-
-    // przypisanie odpowiadających wartości z macierzy b do macierzy x
-	for (int i =0; i < x->r; ++i) {
-		x->data[i][0] = b->data[i][0];
 	}
+	
+    // przypisanie odpowiadajacych wartosci z macierzy b do macierzy x
+	for( int i = 0; i < x->r; i++){
+		x->data[i][0] = b -> data[i][0];
+	}	
 
     // wykoywanie reszty działań
 	for (int i = mat->r - 1; i >= 0; --i) {
